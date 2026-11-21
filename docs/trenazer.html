@@ -83,6 +83,7 @@ th,td{border-bottom:1px solid var(--line);padding:5px 8px;text-align:center}
 th:first-child,td:first-child{text-align:left}
 @media (max-width:860px){.duo{grid-template-columns:1fr}.score{margin-left:0}.bar{position:static}}
 @media (max-width:480px){.charts canvas{height:180px}.chleg{margin-left:0}}
+.fbtns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 10px}.fbtn{display:inline-block;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);text-decoration:none;font-size:14px}.fbtn:hover{border-color:var(--accent)}
 .aifoot{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
 </style>
 </head>
@@ -98,7 +99,16 @@ th:first-child,td:first-child{text-align:left}
 <span class="score" id="score"></span></div>
 <section id="app"></section>
 <p class="note" style="margin-top:24px">Správné odpovědi jsou převzaté z tučného písma PDF (strana = verze). Výpočet v Pythonu (<code>zkouska_test.py</code>) dává stejnou volbu ve všech 100 otázkách. Pravidla pro ot07 (doba ustálení), ot08 (τ<sub>R</sub>) a ot10 (vzorkování) jsou rekonstruovaná tak, aby seděla na všech verzích; nejsou to citace z přednášky.</p>
-<footer class="aifoot">Vytvořeno s umělou inteligencí na základě podkladů z předmětu ZČU FEL ZAE · geproha · verze 1.0.1</footer>
+<footer class="aifoot"><span class="fbtns"><a class="fbtn" id="hlasit" href="https://github.com/geproha/zae-sim-velky-motor/issues/new?template=1-chyba.yml">🐞 Nahlásit chybu nebo připomínku</a> <a class="fbtn" href="https://geproha.github.io/zae-sim-velky-motor/napoveda.html">Jak na to (nápověda)</a></span>
+Vytvořeno s umělou inteligencí na základě podkladů z předmětu ZČU FEL ZAE · geproha · verze 1.0.1</footer>
+<script>
+// odkaz na hlášení předvyplní stránku, krok/verzi testu a verzi aplikace
+document.getElementById('hlasit').addEventListener('click', function () {
+  var cast = (location.hash || '').replace('#', '').replace(/open|uceni|otevrit/g, '').replace(/^krok(\d)/, 'krok $1').replace(/^verze(\d+)/, 'verze $1');
+  var q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Zkouškový trenažér', cast: cast, verze: '1.0.1' });
+  this.href = 'https://github.com/geproha/zae-sim-velky-motor/issues/new?' + q.toString();
+});
+</script>
 </main>
 <script src="vendor/katex/dist/katex.min.js"></script>
 <script src="vendor/katex/dist/contrib/auto-render.min.js"></script>

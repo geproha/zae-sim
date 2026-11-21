@@ -1,0 +1,17 @@
+name: ❓ Otázka k látce
+description: Nerozumíš výpočtu nebo grafu a chceš to vysvětlit.
+title: "[Otázka] "
+labels: ["otázka"]
+body:
+  - type: input
+    id: cast
+    attributes:
+      label: Kde (stránka, krok, verze testu)?
+    validations:
+      required: true
+  - type: textarea
+    id: popis
+    attributes:
+      label: Čemu nerozumíš?
+    validations:
+      required: true

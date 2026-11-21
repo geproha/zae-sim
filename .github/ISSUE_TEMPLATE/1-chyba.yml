@@ -1,0 +1,51 @@
+name: 🐞 Nahlásit chybu
+description: Něco nefunguje, počítá špatně nebo se špatně zobrazuje.
+title: "[Chyba] "
+labels: ["chyba"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Díky, že pomáháš! Stačí vyplnit, co víš. Nevadí, když něco nevyplníš.
+  - type: dropdown
+    id: stranka
+    attributes:
+      label: Kde to bylo?
+      options:
+        - Výklad – Větší motor krok za krokem
+        - Zkouškový trenažér
+        - Jinde / nevím
+    validations:
+      required: true
+  - type: input
+    id: cast
+    attributes:
+      label: Který krok nebo verze testu?
+      description: Např. „krok 5“ nebo „verze 3, otázka ot06“. Když jsi přišel(a) tlačítkem ze stránky, je to vyplněné.
+  - type: textarea
+    id: popis
+    attributes:
+      label: Co se stalo?
+      description: Popiš vlastními slovy, co je špatně.
+    validations:
+      required: true
+  - type: textarea
+    id: ocekavani
+    attributes:
+      label: Co jsi čekal(a)?
+      description: Jak by to podle tebe mělo být správně (např. jiný výsledek, jiný vzorec).
+  - type: textarea
+    id: obrazek
+    attributes:
+      label: Snímek obrazovky (nepovinné)
+      description: Obrázek sem stačí přetáhnout myší nebo vložit Ctrl+V.
+  - type: input
+    id: verze
+    attributes:
+      label: Verze stránky
+      description: Je v patičce stránky (např. 1.4.0). Při příchodu tlačítkem se vyplní sama.
+  - type: input
+    id: prohlizec
+    attributes:
+      label: Prohlížeč a zařízení (nepovinné)
+      placeholder: např. Chrome na notebooku, Safari na iPhonu

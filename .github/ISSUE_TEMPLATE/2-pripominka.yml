@@ -1,0 +1,30 @@
+name: 💡 Připomínka nebo nápad
+description: Něco by šlo vysvětlit lépe, chybí ti tam něco, nebo máš nápad.
+title: "[Připomínka] "
+labels: ["připomínka"]
+body:
+  - type: dropdown
+    id: stranka
+    attributes:
+      label: Kterou stránku se to týká?
+      options:
+        - Výklad – Větší motor krok za krokem
+        - Zkouškový trenažér
+        - Obecně
+    validations:
+      required: true
+  - type: input
+    id: cast
+    attributes:
+      label: Který krok nebo verze testu? (nepovinné)
+  - type: textarea
+    id: popis
+    attributes:
+      label: Co navrhuješ?
+      description: Klidně stručně. Odkaz na přednášku nebo podklad pomůže.
+    validations:
+      required: true
+  - type: input
+    id: verze
+    attributes:
+      label: Verze stránky (nepovinné)

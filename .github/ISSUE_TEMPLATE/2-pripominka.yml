@@ -10,6 +10,7 @@ body:
       options:
         - Výklad – Větší motor krok za krokem
         - Zkouškový trenažér
+        - Filtry a omezovače
         - Obecně
     validations:
       required: true

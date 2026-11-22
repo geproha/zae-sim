@@ -1,11 +1,12 @@
 # Simulace pro ZČU FEL ZAE
 
-Interaktivní výklad regulace stejnosměrného motoru a zkouškový trenažér pro předmět ZAE (regulace) na ZČU FEL.
+Interaktivní výklad regulace stejnosměrného motoru, zkouškový trenažér a přehled filtrů a omezovačů pro předmět ZAE (regulace) na ZČU FEL; filtry navazují na TEL2.
 
 | Stránka | Odkaz |
 |---|---|
 | **Větší motor krok za krokem** – od samotného motoru po kaskádu s omezením proudu, posuvníky, grafy, odvození | https://geproha.github.io/zae-sim-velky-motor/ |
 | **Zkouškový trenažér** – 10 verzí ukázkového vstupního testu, Bodeho grafy, návrh P/PI, postupy | https://geproha.github.io/zae-sim-velky-motor/trenazer.html |
+| **Filtry, propusti a omezovače** – princip R, L, C, zapojení filtrů a omezovačů, laboratoř, poznávání typu filtru | https://geproha.github.io/zae-sim-velky-motor/filtry.html |
 | **Nápověda** – jak nahlásit chybu nebo připomínku | https://geproha.github.io/zae-sim-velky-motor/napoveda.html |
 
 ## Našel jsi chybu nebo máš nápad?
@@ -20,6 +21,7 @@ Nevíš jak? **[Nápověda krok za krokem](https://geproha.github.io/zae-sim-vel
 docs/                    hotový web (GitHub Pages zveřejňuje tuto složku)
   index.html             výklad „Větší motor krok za krokem“
   trenazer.html          zkouškový trenažér
+  filtry.html            filtry, propusti a omezovače
   napoveda.html          nápověda k hlášení chyb
   *.js                   model motoru, výklad, trenažér a data testu
   vendor/katex/          knihovna pro vzorce (MIT)

@@ -92,7 +92,7 @@ th:first-child,td:first-child{text-align:left}
 <p class="kicker">ZAE · příprava na zkoušku · kombinované studium</p>
 <h1>Zkouškový trenažér</h1>
 <p class="lead">Deset verzí ukázkového vstupního testu (str. 1–10 PDF). Ke každé verzi Bodeho charakteristiky, návrh P regulátoru podle bezpečnosti ve fázi, přechodová charakteristika s P a PI a otázky ot01–ot10 s postupem řešení.</p>
-<p class="links"><span>Zdroj: ZAEzk_priklady_vstupni_test_reseni.pdf</span> · <span>Python kontrola</span> · <a href="index.html">Výklad: Větší motor</a> · <span>Poznámka</span></p>
+<p class="links"><span>Zdroj: ZAEzk_priklady_vstupni_test_reseni.pdf</span> · <span>Python kontrola</span> · <a href="index.html">Výklad: Větší motor</a> · <a href="filtry.html">Filtry a omezovače</a> · <span>Poznámka</span></p>
 <p class="warn"><b>Body:</b> PDF uvádí „pro uznání testu je třeba <b>6 bodů</b>“. <b>7 bodů odpovídá známce 3</b> (upřesnění uživatele 21. 11. 2026, poznámka z přednášky). Se 6 body se test obhajuje hůř — cíl je aspoň 7.</p>
 <div class="bar"><span style="font-size:14px;color:var(--ink2)">Verze</span><div class="vers" id="vers"></div>
 <div class="seg" id="mode"><button data-m="sam" aria-pressed="true">Zkus si sám</button><button data-m="uc" aria-pressed="false">Učení (řešení vidět)</button></div>
@@ -100,12 +100,12 @@ th:first-child,td:first-child{text-align:left}
 <section id="app"></section>
 <p class="note" style="margin-top:24px">Správné odpovědi jsou převzaté z tučného písma PDF (strana = verze). Výpočet v Pythonu (<code>zkouska_test.py</code>) dává stejnou volbu ve všech 100 otázkách. Pravidla pro ot07 (doba ustálení), ot08 (τ<sub>R</sub>) a ot10 (vzorkování) jsou rekonstruovaná tak, aby seděla na všech verzích; nejsou to citace z přednášky.</p>
 <footer class="aifoot"><span class="fbtns"><a class="fbtn" id="hlasit" href="https://github.com/geproha/zae-sim-velky-motor/issues/new?template=1-chyba.yml">🐞 Nahlásit chybu nebo připomínku</a> <a class="fbtn" href="https://geproha.github.io/zae-sim-velky-motor/napoveda.html">Jak na to (nápověda)</a></span>
-Vytvořeno s umělou inteligencí na základě podkladů z předmětu ZČU FEL ZAE · geproha · verze 1.0.1</footer>
+Vytvořeno s umělou inteligencí na základě podkladů z předmětu ZČU FEL ZAE · geproha · verze 1.0.2</footer>
 <script>
 // odkaz na hlášení předvyplní stránku, krok/verzi testu a verzi aplikace
 document.getElementById('hlasit').addEventListener('click', function () {
   var cast = (location.hash || '').replace('#', '').replace(/open|uceni|otevrit/g, '').replace(/^krok(\d)/, 'krok $1').replace(/^verze(\d+)/, 'verze $1');
-  var q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Zkouškový trenažér', cast: cast, verze: '1.0.1' });
+  var q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Zkouškový trenažér', cast: cast, verze: '1.0.2' });
   this.href = 'https://github.com/geproha/zae-sim-velky-motor/issues/new?' + q.toString();
 });
 </script>

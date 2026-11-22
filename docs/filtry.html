@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Filtry a omezovače</title>
+<link rel="stylesheet" href="vendor/katex/dist/katex.min.css">
+<style>
+:root{
+  --bg:#f7f6f2;--card:#ffffff;--ink:#1f1e1c;--ink2:#55544f;--muted:#8a897f;--line:#e2e0d8;--grid:#ecebe5;
+  --accent:#2a78d6;--new:#eb6834;--newbg:#fdeee6;--soft:#eef4fc;--good:#0b7a3e;--goodbg:#e3f4ea;--bad:#c4332f;--badbg:#fbe5e4;
+  --u1:#6b6a65;--u2:#2a78d6;--ph:#eb6834;--as:#9a998f;--h:#1baf7a;
+  color-scheme:light;
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#141413;--card:#1e1e1c;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8f8e85;--line:#34332f;--grid:#2a2a27;
+  --accent:#3987e5;--new:#d95926;--newbg:#3a2418;--soft:#1b2633;--good:#4cc27e;--goodbg:#173323;--bad:#ef7b77;--badbg:#3a1d1c;
+  --u1:#a3a299;--u2:#3987e5;--ph:#d95926;--as:#6d6c64;--h:#199e70;color-scheme:dark;}}
+:root[data-theme="dark"]{
+  --bg:#141413;--card:#1e1e1c;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8f8e85;--line:#34332f;--grid:#2a2a27;
+  --accent:#3987e5;--new:#d95926;--newbg:#3a2418;--soft:#1b2633;--good:#4cc27e;--goodbg:#173323;--bad:#ef7b77;--badbg:#3a1d1c;
+  --u1:#a3a299;--u2:#3987e5;--ph:#d95926;--as:#6d6c64;--h:#199e70;color-scheme:dark;}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.55 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:1180px;margin:0 auto;padding:20px max(16px,env(safe-area-inset-right)) 60px max(16px,env(safe-area-inset-left));overflow-x:hidden}
+a{color:var(--accent)}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{margin:.1em 0;font-size:clamp(26px,4vw,38px);line-height:1.15}
+h2{font-size:clamp(21px,3vw,27px);margin:30px 0 6px;line-height:1.2;scroll-margin-top:64px}
+h3{margin:0 0 6px;font-size:15px}
+.lead{color:var(--ink2);max-width:820px}
+.links{font-size:14px;color:var(--ink2)}
+nav.toc{display:flex;gap:6px;flex-wrap:wrap;position:sticky;top:0;background:var(--bg);padding:8px 0;z-index:5;border-bottom:1px solid var(--line);margin-top:12px}
+nav.toc a{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:999px;padding:5px 12px;font-size:14px;text-decoration:none}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px}.grid2>*{min-width:0}.grid2 .card{margin:0}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.grid3>*{min-width:0}.grid3 .card{margin:0}
+.p{max-width:860px}
+.box{background:var(--soft);border-radius:10px;padding:10px 14px;margin:10px 0;max-width:860px}
+.seg{display:inline-flex;flex-wrap:wrap;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+.seg button{border:0;border-right:1px solid var(--line);background:var(--card);color:var(--ink);padding:6px 11px;font:inherit;font-size:14px;cursor:pointer}
+.seg button:last-child{border-right:0}
+.seg button[aria-pressed="true"]{background:var(--accent);color:#fff}
+.controls{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px 18px;align-items:end;margin-top:10px}
+.ctl label{display:flex;justify-content:space-between;font-size:13px;color:var(--ink2);gap:8px}
+.ctl output{font-variant-numeric:tabular-nums;color:var(--ink);font-weight:600}
+.ctl input[type=range]{width:100%;accent-color:var(--accent)}
+.scroll{overflow-x:auto}
+.sch svg{display:block;width:100%;max-width:560px;height:auto;margin:0 auto}
+canvas{width:100%;height:200px;display:block}
+.chleg{display:flex;gap:14px;flex-wrap:wrap;font-size:13px;color:var(--ink2);margin:4px 0 0 52px}
+.chleg span::before{content:"";display:inline-block;width:18px;border-top:2px solid var(--c);margin-right:6px;vertical-align:middle}
+.chleg span.dash::before{border-top-style:dashed}
+.read{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px 14px;font-size:14px;font-variant-numeric:tabular-nums;margin-top:8px}
+.read div span{display:block;color:var(--ink2);font-size:12px}.read div b{font-size:16px}
+.formula{overflow-x:auto;padding:4px 0}
+.katex-display{overflow-x:auto;overflow-y:hidden;padding:2px 0}
+details{background:var(--card);border:1px solid var(--line);border-radius:10px;margin:8px 0;padding:0 14px}
+details>summary{cursor:pointer;padding:10px 0;font-weight:600;list-style:none}
+details>summary::before{content:"▸";display:inline-block;width:1.1em;color:var(--accent)}
+details[open]>summary::before{content:"▾"}
+details .body{padding:0 0 12px;max-width:860px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink2);font-weight:600}
+.quiz .opts{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.quiz .opts button{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+.quiz .opts button.ok{background:var(--goodbg);border-color:var(--good);color:var(--good);font-weight:600}
+.quiz .opts button.ko{background:var(--badbg);border-color:var(--bad);color:var(--bad);text-decoration:line-through}
+.btn{border:1px solid var(--line);background:var(--card);color:var(--ink);border-radius:8px;padding:6px 12px;font:inherit;font-size:14px;cursor:pointer}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.note{font-size:13px;color:var(--muted)}
+.fbtns{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:0 0 10px}.fbtn{display:inline-block;padding:6px 12px;border:1px solid var(--line);border-radius:8px;background:var(--card);color:var(--ink);text-decoration:none;font-size:14px}
+.aifoot{margin-top:28px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
+@media (max-width:860px){.grid2,.grid3{grid-template-columns:1fr}}
+@media (max-width:480px){canvas{height:170px}.chleg{margin-left:0}}
+</style>
+</head>
+<body>
+<main>
+<p class="kicker">ZAE · TEL2 · elektrotechnický základ</p>
+<h1>Filtry, propusti a omezovače</h1>
+<p class="lead">Co dělá filtr a co omezovač, proč fungují (dělič napětí z R, L a C, dioda), jak je zapojit a jak je poznat podle schématu a frekvenční charakteristiky. Ke všemu interaktivní laboratoř.</p>
+<p class="links"><a href="index.html">Větší motor krok za krokem</a> · <a href="trenazer.html">Zkouškový trenažér</a></p>
+<nav class="toc"><a href="#zaklad">Princip</a><a href="#prvky">R, L, C</a><a href="#lab">Laboratoř filtrů</a><a href="#poznej">Poznej filtr</a><a href="#omez">Omezovače</a><a href="#zae">Kde v ZAE</a></nav>
+<section id="app"></section>
+<footer class="aifoot"><span class="fbtns"><a class="fbtn" id="hlasit" href="https://github.com/geproha/zae-sim-velky-motor/issues/new?template=1-chyba.yml">🐞 Nahlásit chybu nebo připomínku</a> <a class="fbtn" href="https://geproha.github.io/zae-sim-velky-motor/napoveda.html">Jak na to (nápověda)</a></span>
+Vytvořeno s umělou inteligencí na základě podkladů z předmětů ZČU FEL ZAE a TEL2 · geproha · verze 1.0.0</footer>
+</main>
+<script src="vendor/katex/dist/katex.min.js"></script>
+<script src="vendor/katex/dist/contrib/auto-render.min.js"></script>
+<script src="filtry.js"></script>
+</body>
+</html>

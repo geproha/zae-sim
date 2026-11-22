@@ -7,7 +7,7 @@ Interaktivní výklad regulace stejnosměrného motoru, zkouškový trenažér a
 | **Větší motor krok za krokem** – od samotného motoru po kaskádu s omezením proudu, posuvníky, grafy, odvození | https://geproha.github.io/zae-sim/ |
 | **Zkouškový trenažér** – 10 verzí ukázkového vstupního testu, Bodeho grafy, návrh P/PI, postupy | https://geproha.github.io/zae-sim/trenazer.html |
 | **Filtry, propusti a omezovače** – princip R, L, C, zapojení filtrů a omezovačů, laboratoř, poznávání typu filtru | https://geproha.github.io/zae-sim/filtry.html |
-| **Souvislosti** – kde se ZAE potkává s EST, PVEL, TEL1–3, ZELN, M2E, ELM, ZME, EPR | https://geproha.github.io/zae-sim/souvislosti.html |
+| **Souvislosti** – kde se ZAE potkává se ZEIN, EST, PVEL, TEL1–3, ZELN, M2E, ELM, ZME, EPR | https://geproha.github.io/zae-sim/souvislosti.html |
 | **Zdroje** – odkud který údaj pochází | https://geproha.github.io/zae-sim/zdroje.html |
 | **Nápověda** – jak nahlásit chybu nebo připomínku | https://geproha.github.io/zae-sim/napoveda.html |
 

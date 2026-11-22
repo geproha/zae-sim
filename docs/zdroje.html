@@ -1,0 +1,76 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Zdroje simulací ZAE</title>
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--ink:#1f1e1c;--ink2:#55544f;--muted:#8a897f;--line:#e2e0d8;--accent:#2a78d6;--soft:#eef4fc;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--card:#1e1e1c;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8f8e85;--line:#34332f;--accent:#3987e5;--soft:#1b2633;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141413;--card:#1e1e1c;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8f8e85;--line:#34332f;--accent:#3987e5;--soft:#1b2633;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:860px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+a{color:var(--accent)}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-size:clamp(26px,4vw,34px);line-height:1.2;margin:.1em 0 .3em}
+h2{font-size:20px;margin:28px 0 8px}
+.lead{color:var(--ink2)}
+.box{background:var(--soft);border-radius:10px;padding:12px 16px;margin:12px 0}
+table{border-collapse:collapse;width:100%;font-size:15px}
+td,th{border-bottom:1px solid var(--line);padding:7px 8px;text-align:left;vertical-align:top}
+th{color:var(--ink2);font-weight:600}
+td:first-child{width:34%}
+.tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;border-radius:4px;padding:1px 6px;margin-right:4px;border:1px solid var(--line);color:var(--ink2)}
+footer{margin-top:32px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
+</style>
+</head>
+<body>
+<main>
+<p class="kicker">ZAE · simulace · zdroje</p>
+<h1>Odkud obsah pochází</h1>
+<p class="lead">Stránky vytvořila umělá inteligence (Claude) na zadání studenta. Ze školních podkladů jsou převzaté <b>parametry, schémata, zadání a značení</b>. <b>Výklad, odvození a texty</b> jsou psané z obecných znalostí elektrotechniky a regulace a ověřené výpočtem (simulace v Pythonu a v prohlížeči dávají stejná čísla). Několik údajů o skutečných zařízeních je z veřejných zdrojů na internetu. Nejde o oficiální materiál předmětu; směrodatné jsou přednášky a podklady vyučujících.</p>
+<div class="box">Značky u položek: <span class="tag">ŠKOLA</span> podklad předmětu ZČU FEL · <span class="tag">WEB</span> veřejný zdroj · <span class="tag">VLASTNÍ</span> vlastní výklad, scénář nebo odhad (na stránkách vždy označený).</div>
+
+<h2>Větší motor krok za krokem</h2>
+<table>
+<tr><th>Co</th><th>Zdroj</th></tr>
+<tr><td>Schéma kaskády „Větší motor“, náčrt průběhů, poznámka o proudové smyčce</td><td><span class="tag">ŠKOLA</span> ruční zápis z kombinované výuky ZAE, 21. 11. 2026 (list 4)</td></tr>
+<tr><td>Parametry motoru a měniče (R, L, J, kΦ, K<sub>m</sub>, f<sub>PWM</sub>), regulátory K<sub>ri</sub>, K<sub>rω</sub>, τ<sub>rω</sub>, mez I<sub>max</sub>, struktura kaskády, stavový popis</td><td><span class="tag">ŠKOLA</span> V. Blahník: ZAE14 – regulace stejnosměrného motoru (PI vs LSR), rev. 10/2023, str. 3–4, 7, 9–12, 15, 21</td></tr>
+<tr><td>Pokus s brzdou a referenční hodnoty</td><td><span class="tag">VLASTNÍ</span> poznámka studenta pro druhou simulaci (výuková rekonstrukce, ověřeno výpočtem)</td></tr>
+<tr><td>Scénáře (ω*, M<sub>z</sub>, časy), P/PI regulátor přímo na napětí, U<sub>max</sub>, předvolby, ohřev motoru, profil „auto“</td><td><span class="tag">VLASTNÍ</span> vymyšlené / odhad, na stránce označené</td></tr>
+<tr><td>Přetížitelnost průmyslových měničů (150 % po 60 s, 200 % po 10 s)</td><td><span class="tag">WEB</span> <a href="https://library.e.abb.com/public/62d76534bd37d908c1257b0c00545dfd/3ADW000192R0201%20DCS800%20Technical%20catalogue%20e%20b.pdf">ABB DCS800 Technical catalogue</a>; <a href="https://assets.new.siemens.com/siemens/assets/api/uuid:d39ca873-f66d-4019-b338-584267157283/SINAMICS-DCM-Base-Drives-brochure.pdf">Siemens SINAMICS DCM Base Drives</a></td></tr>
+<tr><td>Údaje o elektromobilu (295 kW na motor, baterie 407 V, tři motory)</td><td><span class="tag">WEB</span> <a href="https://www.tesla.com/ownersmanual/models/en_us/GUID-E414862C-CFA1-4A0B-9548-BE21C32CAA58.html">Tesla Model S – návod k obsluze, technické údaje</a>; <a href="https://insideevs.com/news/514385/tesla-models-plaid-engineering-analysis/">InsideEVs – engineering analysis</a></td></tr>
+<tr><td>Příklad trvalého a krátkodobého proudu skutečného motoru</td><td><span class="tag">WEB</span> <a href="https://www.go-ev.com/PDFs/Shop_Manual2.pdf#page=33">NetGain Motors – příručka WarP, str. 33</a></td></tr>
+</table>
+
+<h2>Zkouškový trenažér</h2>
+<table>
+<tr><th>Co</th><th>Zdroj</th></tr>
+<tr><td>Deset verzí testu: parametry, otázky, možnosti a správné odpovědi</td><td><span class="tag">ŠKOLA</span> ZAEzk – příklady vstupního testu s řešením (10 stran = 10 verzí)</td></tr>
+<tr><td>Body k uznání (6) a na známku 3 (7)</td><td><span class="tag">ŠKOLA</span> PDF testu; upřesnění z výuky 21. 11. 2026</td></tr>
+<tr><td>Postupy řešení ot01–ot06, ot09</td><td><span class="tag">VLASTNÍ</span> odvození z frekvenčních charakteristik; souhlasí s řešením PDF ve všech 100 otázkách</td></tr>
+<tr><td>Pravidla pro ot07 (doba ustálení), ot08 (τ<sub>R</sub>), ot10 (vzorkování)</td><td><span class="tag">VLASTNÍ</span> rekonstrukce, aby seděla na všech verzích; přesné pravidlo z přednášky není ověřené</td></tr>
+</table>
+
+<h2>Filtry, propusti a omezovače</h2>
+<table>
+<tr><th>Co</th><th>Zdroj</th></tr>
+<tr><td>Rozsah: základní typy filtrů, frekvenční charakteristiky, rozpoznání typu podle schématu, frekvenční, přenosové a impulzní funkce</td><td><span class="tag">ŠKOLA</span> sylabus předmětu TEL2 (KEP)</td></tr>
+<tr><td>RC článek jako dolní propust (setrvačný člen), filtr derivační složky, saturace</td><td><span class="tag">ŠKOLA</span> ZAE – přednáška o obrazovém a frekvenčním popisu bloků; přednáška 07 derivační složka; ZAE14</td></tr>
+<tr><td>Výklad R, L, C, dělič napětí, přenosy filtrů, dioda a omezovače, laboratoř a cvičení</td><td><span class="tag">VLASTNÍ</span> obecná elektrotechnika (učebnicové vztahy), ideální prvky; dioda exponenciálním modelem</td></tr>
+<tr><td>Schematické značky</td><td>norma IEC 60617 (ČSN EN 60617) – značky jsou kresleny podle zavedené praxe, norma není citována ani přebírána doslova</td></tr>
+</table>
+
+<h2>Technika</h2>
+<table>
+<tr><td>Vzorce</td><td><span class="tag">WEB</span> <a href="https://katex.org/">KaTeX</a> (licence MIT)</td></tr>
+<tr><td>Výpočty</td><td><span class="tag">VLASTNÍ</span> simulace RK4 s krokem 25 µs; kontrola v Pythonu (numpy)</td></tr>
+</table>
+
+<p style="margin-top:24px">Našel jsi chybu nebo nepřesnost ve zdroji? <a href="https://github.com/geproha/zae-sim-velky-motor/issues/new?template=1-chyba.yml">Nahlas ji</a> (<a href="napoveda.html">nápověda</a>).</p>
+<p><a href="index.html">Větší motor</a> · <a href="trenazer.html">Zkouškový trenažér</a> · <a href="filtry.html">Filtry a omezovače</a></p>
+<footer>Vytvořeno s pomocí umělé inteligence z podkladů předmětů ZČU FEL a dalších uvedených zdrojů · geproha</footer>
+</main>
+</body>
+</html>

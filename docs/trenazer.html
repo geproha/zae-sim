@@ -100,12 +100,12 @@ th:first-child,td:first-child{text-align:left}
 <section id="app"></section>
 <p class="note" style="margin-top:24px">Správné odpovědi jsou převzaté z tučného písma PDF (strana = verze). Výpočet v Pythonu (<code>zkouska_test.py</code>) dává stejnou volbu ve všech 100 otázkách. Pravidla pro ot07 (doba ustálení), ot08 (τ<sub>R</sub>) a ot10 (vzorkování) jsou rekonstruovaná tak, aby seděla na všech verzích; nejsou to citace z přednášky.</p>
 <footer class="aifoot"><span class="fbtns"><a class="fbtn" id="hlasit" href="https://github.com/geproha/zae-sim-velky-motor/issues/new?template=1-chyba.yml">🐞 Nahlásit chybu nebo připomínku</a> <a class="fbtn" href="https://geproha.github.io/zae-sim-velky-motor/napoveda.html">Jak na to (nápověda)</a></span>
-Vytvořeno s umělou inteligencí na základě podkladů z předmětu ZČU FEL ZAE · geproha · verze 1.0.2</footer>
+Vytvořeno s pomocí umělé inteligence z podkladů předmětů ZČU FEL a dalších zdrojů (<a href="https://geproha.github.io/zae-sim-velky-motor/zdroje.html">zdroje</a>) · geproha · verze 1.0.3</footer>
 <script>
 // odkaz na hlášení předvyplní stránku, krok/verzi testu a verzi aplikace
 document.getElementById('hlasit').addEventListener('click', function () {
   var cast = (location.hash || '').replace('#', '').replace(/open|uceni|otevrit/g, '').replace(/^krok(\d)/, 'krok $1').replace(/^verze(\d+)/, 'verze $1');
-  var q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Zkouškový trenažér', cast: cast, verze: '1.0.2' });
+  var q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Zkouškový trenažér', cast: cast, verze: '1.0.3' });
   this.href = 'https://github.com/geproha/zae-sim-velky-motor/issues/new?' + q.toString();
 });
 </script>

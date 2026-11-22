@@ -7,6 +7,7 @@ Interaktivní výklad regulace stejnosměrného motoru, zkouškový trenažér a
 | **Větší motor krok za krokem** – od samotného motoru po kaskádu s omezením proudu, posuvníky, grafy, odvození | https://geproha.github.io/zae-sim-velky-motor/ |
 | **Zkouškový trenažér** – 10 verzí ukázkového vstupního testu, Bodeho grafy, návrh P/PI, postupy | https://geproha.github.io/zae-sim-velky-motor/trenazer.html |
 | **Filtry, propusti a omezovače** – princip R, L, C, zapojení filtrů a omezovačů, laboratoř, poznávání typu filtru | https://geproha.github.io/zae-sim-velky-motor/filtry.html |
+| **Zdroje** – odkud který údaj pochází | https://geproha.github.io/zae-sim-velky-motor/zdroje.html |
 | **Nápověda** – jak nahlásit chybu nebo připomínku | https://geproha.github.io/zae-sim-velky-motor/napoveda.html |
 
 ## Našel jsi chybu nebo máš nápad?
@@ -23,6 +24,7 @@ docs/                    hotový web (GitHub Pages zveřejňuje tuto složku)
   trenazer.html          zkouškový trenažér
   filtry.html            filtry, propusti a omezovače
   napoveda.html          nápověda k hlášení chyb
+  zdroje.html            přehled zdrojů
   *.js                   model motoru, výklad, trenažér a data testu
   vendor/katex/          knihovna pro vzorce (MIT)
 .github/ISSUE_TEMPLATE/  formuláře pro hlášení (chyba, připomínka, otázka)
@@ -34,6 +36,6 @@ Soubory v `docs/` se generují ze soukromého studijního vaultu autora (skript 
 
 ## O projektu
 
-Vytvořeno s umělou inteligencí na základě podkladů z předmětu ZČU FEL ZAE. Parametry motoru a regulátorů pocházejí z výukových podkladů předmětu (ZAE14), ostatní hodnoty jsou vlastní scénáře a odhady a ve výkladu jsou vždy označené. Nejde o oficiální materiál předmětu; směrodatné jsou přednášky a podklady vyučujících.
+Vytvořeno s pomocí umělé inteligence. Ze školních podkladů ZČU FEL (ZAE, TEL2) jsou převzaté parametry, schémata a zadání; výklad je psaný z obecných znalostí elektrotechniky a ověřený výpočtem; několik údajů o skutečných zařízeních je z veřejných zdrojů. Podrobně po jednotlivých stránkách: **[Zdroje](https://geproha.github.io/zae-sim-velky-motor/zdroje.html)**. Nejde o oficiální materiál předmětu; směrodatné jsou přednášky a podklady vyučujících.
 
 Autor: [geproha](https://github.com/geproha) · licence MIT (`LICENSE`) · KaTeX MIT (`docs/vendor/katex/LICENSE`)

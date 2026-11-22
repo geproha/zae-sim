@@ -127,12 +127,12 @@ ul.check{padding-left:1.2em}
 <footer class="nav"><button class="btn" id="prev">← Předchozí krok</button><button class="btn primary" id="next">Další krok →</button></footer>
 <p class="note" style="margin-top:24px">Vlastní výukový model (ne kód přednášky). Parametry motoru a kaskády: ZAE14_regulaceSSmot(PIvsLSR).pdf, str. 7, 10, 12, 21. Vymyšlené: U<sub>max</sub>, P/PI regulátor otáček na napětí (kroky 2–3), ω*, M<sub>z</sub> a časování. Průměrovaný měnič, bez PWM zvlnění a tření. Výpočet: krok 25 µs, RK4; stejná čísla dává <code>motor_kaskada.py</code>.</p>
 <footer class="aifoot"><span class="fbtns"><a class="fbtn" id="hlasit" href="https://github.com/geproha/zae-sim-velky-motor/issues/new?template=1-chyba.yml">🐞 Nahlásit chybu nebo připomínku</a> <a class="fbtn" href="https://geproha.github.io/zae-sim-velky-motor/napoveda.html">Jak na to (nápověda)</a></span>
-Vytvořeno s umělou inteligencí na základě podkladů z předmětu ZČU FEL ZAE · geproha · verze 1.5.1</footer>
+Vytvořeno s pomocí umělé inteligence z podkladů předmětů ZČU FEL a dalších zdrojů (<a href="https://geproha.github.io/zae-sim-velky-motor/zdroje.html">zdroje</a>) · geproha · verze 1.5.2</footer>
 <script>
 // odkaz na hlášení předvyplní stránku, krok/verzi testu a verzi aplikace
 document.getElementById('hlasit').addEventListener('click', function () {
   var cast = (location.hash || '').replace('#', '').replace(/open|uceni|otevrit/g, '').replace(/^krok(\d)/, 'krok $1').replace(/^verze(\d+)/, 'verze $1');
-  var q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Výklad – Větší motor krok za krokem', cast: cast, verze: '1.5.1' });
+  var q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Výklad – Větší motor krok za krokem', cast: cast, verze: '1.5.2' });
   this.href = 'https://github.com/geproha/zae-sim-velky-motor/issues/new?' + q.toString();
 });
 </script>

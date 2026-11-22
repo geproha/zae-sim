@@ -7,6 +7,7 @@ Interaktivní výklad regulace stejnosměrného motoru, zkouškový trenažér a
 | **Větší motor krok za krokem** – od samotného motoru po kaskádu s omezením proudu, posuvníky, grafy, odvození | https://geproha.github.io/zae-sim/ |
 | **Zkouškový trenažér** – 10 verzí ukázkového vstupního testu, Bodeho grafy, návrh P/PI, postupy | https://geproha.github.io/zae-sim/trenazer.html |
 | **Filtry, propusti a omezovače** – princip R, L, C, zapojení filtrů a omezovačů, laboratoř, poznávání typu filtru | https://geproha.github.io/zae-sim/filtry.html |
+| **Souvislosti** – kde se ZAE potkává s EST, PVEL, TEL1–3, ZELN, M2E, ELM, ZME, EPR | https://geproha.github.io/zae-sim/souvislosti.html |
 | **Zdroje** – odkud který údaj pochází | https://geproha.github.io/zae-sim/zdroje.html |
 | **Nápověda** – jak nahlásit chybu nebo připomínku | https://geproha.github.io/zae-sim/napoveda.html |
 
@@ -25,6 +26,7 @@ docs/                    hotový web (GitHub Pages zveřejňuje tuto složku)
   filtry.html            filtry, propusti a omezovače
   napoveda.html          nápověda k hlášení chyb
   zdroje.html            přehled zdrojů
+  souvislosti.html       souvislosti s dalšími předměty
   *.js                   model motoru, výklad, trenažér a data testu
   vendor/katex/          knihovna pro vzorce (MIT)
 .github/ISSUE_TEMPLATE/  formuláře pro hlášení (chyba, připomínka, otázka)

@@ -379,4 +379,4 @@ function math(el) { if (typeof renderMathInElement === 'function') renderMathInE
 
 render();
 let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { drawFilter(); plotLim(); }, 150); });
-$('hlasit').addEventListener('click', function () { const q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Filtry a omezovače', cast: (location.hash || '').replace('#', ''), verze: '1.2.0' }); this.href = 'https://github.com/geproha/zae-sim/issues/new?' + q.toString(); });
+$('hlasit').addEventListener('click', function () { const q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Filtry a omezovače', cast: (location.hash || '').replace('#', ''), verze: '1.2.1' }); this.href = 'https://github.com/geproha/zae-sim/issues/new?' + q.toString(); });

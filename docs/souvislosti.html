@@ -1,0 +1,77 @@
+<!doctype html>
+<html lang="cs">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Souvislosti s předměty</title>
+<style>
+:root{--bg:#f7f6f2;--card:#fff;--ink:#1f1e1c;--ink2:#55544f;--muted:#8a897f;--line:#e2e0d8;--accent:#2a78d6;--soft:#eef4fc;--m:#2a78d6;--f:#eb6834;--d:#1baf7a;color-scheme:light}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#141413;--card:#1e1e1c;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8f8e85;--line:#34332f;--accent:#3987e5;--soft:#1b2633;--m:#3987e5;--f:#d95926;--d:#199e70;color-scheme:dark}}
+:root[data-theme="dark"]{--bg:#141413;--card:#1e1e1c;--ink:#f0efec;--ink2:#c3c2b7;--muted:#8f8e85;--line:#34332f;--accent:#3987e5;--soft:#1b2633;--m:#3987e5;--f:#d95926;--d:#199e70;color-scheme:dark}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font:16px/1.6 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:980px;margin:0 auto;padding:28px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+a{color:var(--accent)}
+.kicker{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin:0}
+h1{font-size:clamp(26px,4vw,34px);line-height:1.2;margin:.1em 0 .3em}
+h2{font-size:20px;margin:28px 0 8px}
+.lead{color:var(--ink2);max-width:780px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:14px 16px;margin:12px 0}
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:15px}
+td,th{border-bottom:1px solid var(--line);padding:8px;text-align:left;vertical-align:top}
+th{color:var(--ink2);font-weight:600}
+td:first-child{white-space:nowrap;font-weight:600}
+.chip{display:inline-block;font-size:12px;border-radius:999px;padding:1px 9px;margin:1px 3px 1px 0;border:1px solid var(--c);color:var(--ink);text-decoration:none}
+.chip::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:var(--c);margin-right:5px;vertical-align:middle}
+.box{background:var(--soft);border-radius:10px;padding:12px 16px;margin:12px 0;max-width:780px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}.grid>*{min-width:0}.grid .card{margin:0}
+.grid h3{margin:0 0 4px;font-size:16px}.grid p{margin:0;font-size:15px;color:var(--ink2)}
+.note{font-size:13px;color:var(--muted)}
+footer{margin-top:32px;padding-top:12px;border-top:1px solid var(--line);font-size:13px;color:var(--muted);text-align:center}
+@media (max-width:760px){.grid{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<main>
+<p class="kicker">ZAE · simulace · souvislosti</p>
+<h1>Kde se ZAE potkává s ostatními předměty</h1>
+<p class="lead">Regulace stojí na látce z jiných předmětů FEL: elektrické stroje, teoretická elektrotechnika, elektronika, matematika a měření. Přehled ukazuje, co odkud přichází a kde to najdeš v simulacích. Vznikl prohledáním sylabů a podkladů předmětů; výskyt tématu neznamená, že je vysvětleno stejně.</p>
+<p><span class="chip" style="--c:var(--m)">Větší motor</span><span class="chip" style="--c:var(--d)">Zkouškový trenažér</span><span class="chip" style="--c:var(--f)">Filtry a omezovače</span> <span class="note">= kde to v simulacích najdeš</span></p>
+
+<div class="grid">
+<div class="card"><h3>Motor</h3><p>Principy strojů (EST) → rovnice a fázory (TEL1) → Laplace (M2E) → regulace (ZAE) → pohony a měniče (PVEL).</p></div>
+<div class="card"><h3>Filtry</h3><p>Typy a charakteristiky (TEL2) → součástky a zapojení s OZ (ZELN) → setrvačný člen, filtr derivace, anti-aliasing (ZAE).</p></div>
+<div class="card"><h3>Vzorkování</h3><p>Osciloskop a A/D převod (ELM) → převodníky (ZELN) → číslicový regulátor a otázka ot10 (ZAE).</p></div>
+</div>
+
+<h2>Motor a pohon</h2>
+<div class="card scroll"><table><tr><th>Předmět</th><th>Téma</th><th>V simulacích</th></tr>
+<tr><td>EST · Elektrické stroje</td><td>elektromechanická přeměna, stejnosměrný stroj, kotva, buzení, otáčky; rozbor pohonu</td><td><a class="chip" style="--c:var(--m)" href="index.html#krok1">model motoru, krok 1</a><a class="chip" style="--c:var(--m)" href="index.html#krok4">kaskáda, krok 4</a></td></tr>
+<tr><td>PVEL · Pohony a výkonová elektronika</td><td>regulované pohony, měniče, PWM (navazující předmět)</td><td><a class="chip" style="--c:var(--m)" href="index.html#krok5">omezení proudu, krok 5</a></td></tr>
+<tr><td>EPR · Elektrické přístroje</td><td>přenos tepla, oteplení přístrojů</td><td><a class="chip" style="--c:var(--m)" href="index.html#krok6">ohřev motoru, krok 6</a></td></tr>
+<tr><td>ZME · Základy mechaniky</td><td>kmitání soustavy s jedním stupněm volnosti: vlastní frekvence, tlumení</td><td><a class="chip" style="--c:var(--m)" href="index.html#krok1">kmitání motoru, krok 1</a><a class="chip" style="--c:var(--f)" href="filtry.html#lab">DP 2. řádu</a></td></tr>
+</table></div>
+
+<h2>Obvody, filtry a omezovače</h2>
+<div class="card scroll"><table><tr><th>Předmět</th><th>Téma</th><th>V simulacích</th></tr>
+<tr><td>TEL1 · Teoretická elektrotechnika 1</td><td>indukčnost, přechodné jevy, harmonický ustálený stav, komplexní impedance, fázory</td><td><a class="chip" style="--c:var(--f)" href="filtry.html#prvky">R, L, C a dělič</a><a class="chip" style="--c:var(--d)" href="trenazer.html">Bodeho grafy</a></td></tr>
+<tr><td>TEL2 · Teoretická elektrotechnika 2</td><td>dvojbrany, frekvenční charakteristiky, základní typy filtrů, přechodné děje 1. a 2. řádu; rozpoznat typ filtru</td><td><a class="chip" style="--c:var(--f)" href="filtry.html">celá stránka Filtry</a><a class="chip" style="--c:var(--f)" href="filtry.html#poznej">Poznej filtr</a></td></tr>
+<tr><td>TEL3 · Teoretická elektrotechnika 3</td><td>výpočet odporu, kapacity a indukčnosti z pole</td><td><a class="chip" style="--c:var(--f)" href="filtry.html#lab">hodnoty prvků filtrů</a></td></tr>
+<tr><td>ZELN · Základy elektroniky</td><td>diody a usměrňovače, operační zesilovač, tranzistor jako spínač, převodníky D/A a A/D, napájecí zdroje</td><td><a class="chip" style="--c:var(--f)" href="filtry.html#omez">omezovače</a><a class="chip" style="--c:var(--m)" href="index.html#krok5">saturace</a></td></tr>
+<tr><td>EPR · Elektrické přístroje</td><td>omezovače přepětí (varistory) — jiný význam slova „omezovač“ než omezení signálu</td><td><a class="chip" style="--c:var(--f)" href="filtry.html#omez">porovnej s omezovači signálu</a></td></tr>
+</table></div>
+
+<h2>Matematika a měření</h2>
+<div class="card scroll"><table><tr><th>Předmět</th><th>Téma</th><th>V simulacích</th></tr>
+<tr><td>M2E · Matematika 2</td><td>diferenciální rovnice, Laplaceova transformace, Fourierova řada a transformace</td><td><a class="chip" style="--c:var(--d)" href="trenazer.html">přenosy F(p), ustálená odchylka</a><a class="chip" style="--c:var(--f)" href="filtry.html#omez">harmonické</a></td></tr>
+<tr><td>ELM · Elektrická měření</td><td>osciloskopy a vzorkovací teorém, A/D převodníky, měření frekvence a fázového posuvu</td><td><a class="chip" style="--c:var(--d)" href="trenazer.html">vzorkování (ot10)</a><a class="chip" style="--c:var(--f)" href="filtry.html#lab">fázový posun</a></td></tr>
+</table></div>
+
+<div class="box"><b>Jak to použít:</b> když ti v ZAE něco nedává smysl (odkud je kΦ, proč se kreslí Bodeho graf, proč je nutný filtr před vzorkováním), podívej se, ze kterého předmětu to přichází, a zopakuj si tam základ. Chybí ti tu souvislost nebo nesedí? <a href="https://github.com/geproha/zae-sim/issues/new?template=2-pripominka.yml">Navrhni ji</a> (<a href="napoveda.html">nápověda</a>).</div>
+
+<p><a href="index.html">Větší motor</a> · <a href="trenazer.html">Zkouškový trenažér</a> · <a href="filtry.html">Filtry a omezovače</a> · <a href="zdroje.html">Zdroje</a></p>
+<footer>Vytvořeno s pomocí umělé inteligence z podkladů předmětů ZČU FEL a dalších zdrojů (<a href="zdroje.html">zdroje</a>) · geproha</footer>
+</main>
+</body>
+</html>

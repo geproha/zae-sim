@@ -9,7 +9,7 @@ const sub = (b, s) => `${b}<tspan baseline-shift="sub" font-size="72%">${s}</tsp
 
 // ------------------------------------------------------------------ stav
 const P = Object.assign({}, M.BASE);
-const S = { step: 1, overlay: true, cursor: 0.12, playing: false, sims: {}, cmp: [true, true, true, true, true], slow: 10, view: null, drag: null, sel: null, ev: [] };
+const S = { step: 1, overlay: true, cursor: 0.12, playing: false, sims: {}, cmp: [true, true, true, true, true], slow: 10, view: null, drag: null, sel: null, ev: [], acc: { schema: true, obvod: false, param: false } };
 
 const CTL = {
   omega_w: { l: 'Požadované otáčky ω*', min: 0, max: 250, st: 5, u: 'rad/s', d: 0, src: 'vymyšlené' , amin: 0, amax: 1500 },
@@ -526,6 +526,17 @@ function srcTxt(key) {
   if (key === 'omega_w' || key === 'omega_w2') t += ` · ${f(P[key] * 60 / (2 * Math.PI), 0)} ot/min` + (P.profil === 'auto' ? ` · auto ≈ ${f(kmh(P[key]), 0)} km/h` : '');
   return t;
 }
+function acc(id, title, body, hint) {
+  return `<details class="acc" data-acc="${id}"${S.acc[id] ? ' open' : ''}><summary>${title}${hint ? `<span class="acchint">${hint}</span>` : ''}</summary><div class="accb">${body}</div></details>`;
+}
+function paramSouhrn() {
+  const t = [`ω* ${f(P.omega_w, 0)} rad/s`, P.vstup === 'rampa' ? 'rampa' : 'skok', P.zatez ? `M<sub>z</sub> ${f(P.Mz, 0)} N·m` : 'bez zátěže'];
+  if (P.zmena) t.push(`ω₂* ${f(P.omega_w2, 0)}`);
+  if (P.profil === 'auto') t.unshift('🚗 auto');
+  const ps = S.preset && PRESETS[S.step] ? PRESETS[S.step][+S.preset.split(':')[1]] : null;
+  if (ps && S.preset.startsWith(S.step + ':')) t.unshift(ps[0]);
+  return t.join(' · ');
+}
 function ctlHtml(keys) {
   const ps = PRESETS[S.step] || [];
   let h = `<div class="presets"><span class="note">Předvolby:</span>${ps.map(([n], j) => `<button class="btn${S.preset === S.step + ':' + j ? ' act' : ''}" data-ps="${j}">${n}</button>`).join('')}</div>`;
@@ -561,7 +572,7 @@ function ctlHtml(keys) {
 
 function chartsHtml(id) {
   const sp = [1, 10, 20, 100, 1000], dl = [0.8, 1.2, 2, 5];
-  return `<div class="card charts" id="${id}">
+  return `<div class="card charts" id="${id}"><div class="cw"><div class="cwmain">
 <div class="row" style="margin:0 0 6px"><button class="btn primary" id="play">▶ Přehrát</button>
 <span class="seg" id="slow" title="Zpomalení přehrávání">${sp.map(k => `<button data-s="${k}" aria-pressed="${S.slow === k}">${k}×</button>`).join('')}</span>
 <label style="flex:1;min-width:160px;display:flex;gap:8px;align-items:center">čas <input type="range" id="tcur" min="0" max="${P.T}" step="0.0001" value="${S.cursor}" style="flex:1"></label></div>
@@ -571,7 +582,8 @@ Lupa <button class="btn" id="zin" title="Přiblížit kolem kurzoru">＋</button
 <div class="chleg" id="lg_w"></div><div class="ch"><canvas id="cv_w"></canvas><div class="tip" id="tp_w"></div></div>
 <div class="chleg" id="lg_i"></div><div class="ch"><canvas id="cv_i"></canvas><div class="tip" id="tp_i"></div></div>
 <div class="chleg" id="lg_u"></div><div class="ch"><canvas id="cv_u"></canvas><div class="tip" id="tp_u"></div></div>
-<p class="note" style="margin:6px 0 0">Najeď myší na graf: svislá čára ukáže hodnoty ve všech třech grafech a motor nahoře se natočí do stejného okamžiku. <b>Táhni myší</b> přes graf = přiblížit vybraný úsek, <b>dvojklik</b> = celý průběh. Silná vodorovná čára je nula (pod ní šedě záporné hodnoty). Tečkované svislé čáry: skok zátěže M<sub>z</sub> a změna otáček ω₂*.</p></div>`;
+<p class="note" style="margin:6px 0 0">Najeď myší na graf: svislá čára ukáže hodnoty ve všech třech grafech a motor nahoře se natočí do stejného okamžiku. <b>Táhni myší</b> přes graf = přiblížit vybraný úsek, <b>dvojklik</b> = celý průběh. Silná vodorovná čára je nula (pod ní šedě záporné hodnoty). Tečkované svislé čáry: skok zátěže M<sub>z</sub> a změna otáček ω₂*.</p></div>
+<aside class="cwside"><h3>Motor v okamžiku kurzoru</h3><div class="motorbox">${motorSvg()}<dl class="readout" id="ro"></dl></div></aside></div></div>`;
 }
 function view() { const T = P.T; return S.view ? [Math.max(0, S.view[0]), Math.min(T, S.view[1])] : [0, T]; }
 function setView(a, b) {
@@ -651,12 +663,11 @@ function render() {
   if (k === 6) { renderSummary(sec); return; }
   const st = STEPS[k];
   sec.innerHTML = `<h2>${st.title}</h2><p class="sub">${st.sub}</p>${P.profil === 'auto' ? `<p class="motto" style="max-width:none">🚗 <b>Profil auto</b> (odhad): stejnosměrný ekvivalent jednoho motoru výkonného elektromobilu, 400 V / 800 A, třetina auta na hřídeli. Texty s konkrétními čísly ZAE14 platí pro výchozí motor. <button class="btn" id="zae14">zpět na motor ZAE14</button></p>` : ''}
-<div class="card schema"><h3>Blokové schéma${k > 1 ? ' <span class="tag">NOVÉ</span> oranžově' : ''}</h3><div class="scroll" id="sch">${schema(k)}</div>
-<p class="legend-sch">Obecné značky regulačního obvodu: <i>w</i> požadovaná hodnota, <i>e</i> regulační odchylka, <i>u</i> akční veličina, <i>y</i> regulovaná veličina, <i>z</i> porucha. Bloky nesou přenos v Laplaceově tvaru (proměnná <i>p</i>). Součtový uzel: znaménko u vstupu.</p></div>
-<div class="duo"><div class="card circuit"><h3>Elektrické schéma kotvy (značky ČSN EN 60617)</h3><div class="scroll">${obvod(k)}</div><p class="note" style="margin:4px 0 0">Šipky napětí od + k −. Měnič je průměrovaný (bez spínání), motor M s cizím buzením, kΦ = konst.</p></div>
-<div class="card"><h3>Motor v okamžiku kurzoru</h3><div class="motorbox">${motorSvg()}<dl class="readout" id="ro"></dl></div></div></div>
 <div class="three"><div class="card new"><div class="k">Co přidáváme</div><p id="tx_add"></p></div><div class="card"><div class="k">Proč</div><p id="tx_why"></p></div><div class="card"><div class="k">Co uvidíš v grafech</div><p id="tx_see"></p></div></div>
-<div class="card"><h3>Parametry pokusu</h3>${ctlHtml(STEP_CTL[k])}</div>
+${acc('schema', `Blokové schéma${k > 1 ? ' <span class="tag">NOVÉ</span> oranžově' : ''}`, `<div class="scroll schema" id="sch">${schema(k)}</div>
+<p class="legend-sch">Obecné značky regulačního obvodu: <i>w</i> požadovaná hodnota, <i>e</i> regulační odchylka, <i>u</i> akční veličina, <i>y</i> regulovaná veličina, <i>z</i> porucha. Bloky nesou přenos v Laplaceově tvaru (proměnná <i>p</i>). Součtový uzel: znaménko u vstupu.</p>`)}
+${acc('obvod', 'Elektrické schéma kotvy (značky ČSN EN 60617)', `<div class="scroll circuit">${obvod(k)}</div><p class="note" style="margin:4px 0 0">Šipky napětí od + k −. Měnič je průměrovaný (bez spínání), motor M s cizím buzením, kΦ = konst.</p>`)}
+${acc('param', 'Parametry pokusu a předvolby', ctlHtml(STEP_CTL[k]), paramSouhrn())}
 ${chartsHtml('charts')}
 <div class="row" style="margin-top:18px"><h3 style="margin:0">Vztahy a odvození (rozklikni)</h3><button class="btn" id="openall">Rozbalit vše</button></div><div id="notes"></div>`;
   bindControls(); recompute();
@@ -717,6 +728,7 @@ ${S.step === 1 ? `<dt>brzda</dt><dd>${r.br[j] ? '<span style="color:var(--i)">dr
 
 
 function bindControls() {
+  document.querySelectorAll('details.acc').forEach(d => d.addEventListener('toggle', () => { S.acc[d.dataset.acc] = d.open; if (d.open) setTimeout(() => S.step === 6 ? drawSummaryCharts() : drawAll(), 0); }));
   document.querySelectorAll('.ctl input[type=range]').forEach(el => el.addEventListener('input', () => {
     const key = el.dataset.k, c = CTL[key]; P[key] = +el.value;
     $('o_' + key).textContent = `${f(P[key], c.d)} ${c.u}`;
@@ -765,20 +777,19 @@ function renderSummary(sec) {
   sec.innerHTML = `<h2>Krok 6 · Kompletní simulace a shrnutí</h2>
 <p class="sub">Všech pět kroků se stejnými parametry. Posuvníky mění všechny kroky najednou; grafy dole ukazují celou kaskádu s omezením (krok 5).</p>
 <div class="card schema"><h3>Výsledné zapojení</h3><div class="scroll">${schema(5).replace(/class="(blk|sum|wire) new"/g, 'class="$1"').replace(/ new"/g, '"')}</div></div>
-<div class="card"><h3>Parametry (platí pro všechny kroky)</h3>${ctlHtml(STEP_CTL[6])}</div>
+${acc('param', 'Parametry (platí pro všechny kroky)', ctlHtml(STEP_CTL[6]), paramSouhrn())}
 <div class="card"><h3>Srovnání kroků</h3><div class="scroll"><table id="tbl"></table></div><p class="note">Překmit a náběh před zátěží, odchylka na konci simulace (po zátěži), špičky v absolutní hodnotě.</p></div>
 <div class="card charts"><h3>Otáčky a proud ve všech krocích</h3>
 <div class="row" style="margin:0 0 4px">Zobrazit: <button class="btn" data-cmp="all">vše</button><button class="btn" data-cmp="none">nic</button><button class="btn" data-cmp="real">bez kroku 4 (bez mezí)</button></div>
 <div class="chleg" id="lg_cmp"></div><div class="ch"><canvas id="cv_cw"></canvas></div><div class="ch"><canvas id="cv_ci"></canvas></div>
 <p class="note" id="cmpnote"></p></div>
 <h3>Kompletní simulace (krok 5)</h3>
-<div class="duo"><div class="card"><h3>Motor v okamžiku kurzoru</h3><div class="motorbox">${motorSvg()}<dl class="readout" id="ro"></dl></div></div>
 <div class="card"><h3>Co si odnést</h3><ul style="margin:0;padding-left:1.2em;font-size:15px">
 <li>Motor sám je kmitavá soustava 2. řádu; ovládání naslepo nepozná zátěž.</li>
 <li>P regulátor: zpětná vazba, ale ustálená odchylka a menší tlumení.</li>
 <li>PI: nulová odchylka, ale zpoždění a riziko nestability.</li>
 <li>Kaskáda: vnitřní proudová smyčka udělá z motoru zdroj momentu; vnější PI řídí otáčky.</li>
-<li>Meze a anti-windup: fyzikálně možný rozběh s konstantním proudem a lineárně rostoucími otáčkami.</li></ul></div></div>
+<li>Meze a anti-windup: fyzikálně možný rozběh s konstantním proudem a lineárně rostoucími otáčkami.</li></ul></div>
 ${chartsHtml('charts')}
 <div class="card"><h3>Energie a ohřev motoru (krok 5)</h3>
 <p class="note" style="margin:0 0 8px">Teplo vzniká ve vinutí: $Q_{Cu} = \\int R\\,i^2\\,\\mathrm dt$. Ohřev $\\Delta T = Q/(m\\,c)$ počítá bez chlazení (horní odhad pro krátké děje). Dvě krajní představy: teplo se stihne rozprostřít do železa celého motoru, nebo zůstane jen v mědi vinutí (prvních pár sekund).</p>

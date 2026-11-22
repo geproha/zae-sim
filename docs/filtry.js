@@ -110,37 +110,24 @@ function schemaSVG(type, p, s = {}) {
 // ------------------------------------------------------------------ značky filtrů (IEC 60617 / ČSN EN 60617)
 // čtverec se třemi vlnovkami nad sebou (nahoře vysoké, dole nízké frekvence); přeškrtnutá vlnovka = pásmo, které filtr nepropustí
 const ZNACKA = { dp1: [1, 1, 0], dp2: [1, 1, 0], hp1: [0, 1, 1], pp: [1, 0, 1], pz: [0, 1, 0], obecny: [0, 0, 0] };
-function znackaSVG(kind, size = 72, label = true) {
-  const cr = ZNACKA[kind], vl = (y, n) => { let d = `M18,${y}`; for (let k = 0; k < n; k++) { const w = 36 / n; d += ` q${w / 4},-6 ${w / 2},0 q${w / 4},6 ${w / 2},0`; } return d; };
-  let g = `<rect x="6" y="6" width="60" height="60" rx="2" style="fill:var(--card);stroke:var(--ink);stroke-width:2"/>`;
+function znackaSVG(kind, size = 72, opt = {}) {
+  const vl = (y, n) => { let d = `M18,${y}`; for (let k = 0; k < n; k++) { const w = 36 / n; d += ` q${w / 4},-6 ${w / 2},0 q${w / 4},6 ${w / 2},0`; } return d; };
+  const box = `<rect x="6" y="6" width="60" height="60" rx="2" style="fill:var(--card);stroke:var(--ink);stroke-width:2"/>`, cross = (y) => `<path d="M24,${y + 6} L48,${y - 6}" style="stroke:var(--new);stroke-width:2.2"/>`;
+  let g = box;
   if (kind === 'obecny') g += `<text x="36" y="42" style="font:italic 15px 'Times New Roman',serif;fill:var(--ink);text-anchor:middle">K(jω)</text>`;
-  else [[20, 4], [36, 3], [52, 2]].forEach(([y, n], k) => { g += `<path d="${vl(y, n)}" style="fill:none;stroke:var(--ink);stroke-width:1.8"/>`; if (cr[k]) g += `<path d="M24,${y + 6} L48,${y - 6}" style="stroke:var(--new);stroke-width:2.2"/>`; });
-  if (kind === 'dp2') g += `<text x="62" y="64" style="font:bold 10px system-ui;fill:var(--muted);text-anchor:end">2</text>`;
-  return `<svg viewBox="0 0 72 72" width="${size}" height="${size}" role="img" aria-label="Značka: ${KIND[kind] || 'obecný blok'}">${g}</svg>`;
+  else if (kind === 'omez') g += `<path d="M14,36 H58 M36,14 V58" style="stroke:var(--muted);stroke-width:1"/><path d="M12,52 H26 L46,20 H60" style="fill:none;stroke:var(--ink);stroke-width:2.2"/>`;
+  else if (kind === 'dvojbran') g = `<rect x="14" y="10" width="44" height="52" rx="2" style="fill:var(--card);stroke:var(--ink);stroke-width:2"/><path d="M2,20 H14 M2,52 H14 M58,20 H70 M58,52 H70" style="stroke:var(--ink);stroke-width:2"/><circle cx="2" cy="20" r="2" style="fill:var(--ink)"/><circle cx="2" cy="52" r="2" style="fill:var(--ink)"/><circle cx="70" cy="20" r="2" style="fill:var(--ink)"/><circle cx="70" cy="52" r="2" style="fill:var(--ink)"/><text x="36" y="41" style="font:italic 14px 'Times New Roman',serif;fill:var(--ink);text-anchor:middle">K</text>`;
+  else if (opt.dve) { // varianta se dvěma vlnovkami (časté v učebnicích): horní = vysoké, dolní = nízké
+    const c = { dp1: [1, 0], dp2: [1, 0], hp1: [0, 1] }[kind] || [0, 0];
+    [[26, 4], [46, 2]].forEach(([y, n], k) => { g += `<path d="${vl(y, n)}" style="fill:none;stroke:var(--ink);stroke-width:1.8"/>`; if (c[k]) g += cross(y); });
+  } else {
+    const cr = ZNACKA[kind];
+    [[20, 4], [36, 3], [52, 2]].forEach(([y, n], k) => { g += `<path d="${vl(y, n)}" style="fill:none;stroke:var(--ink);stroke-width:1.8"/>`; if (cr[k]) g += cross(y); });
+  }
+  if (opt.text) g += `<text x="62" y="64" style="font:bold 9px system-ui;fill:var(--muted);text-anchor:end">${opt.text}</text>`;
+  if (kind === 'dp2' && !opt.text) g += `<text x="62" y="64" style="font:bold 10px system-ui;fill:var(--muted);text-anchor:end">2</text>`;
+  return `<svg viewBox="0 0 72 72" width="${size}" height="${size}" role="img" aria-label="Značka: ${KIND[kind] || kind}">${g}</svg>`;
 }
-
-// ------------------------------------------------------------------ značky prvků
-const STK = 'style="fill:none;stroke:var(--ink);stroke-width:2"', FIL = 'style="fill:var(--ink)"';
-const PRVKY = [
-  ['Rezistor (odpor)', 'R [Ω]', `<path d="M4,30 H30 M70,30 H96" ${STK}/><rect x="30" y="22" width="40" height="16" ${STK}/>`, 'Obdélník (IEC/ČSN). V amerických schématech cikcak čára.'],
-  ['Proměnný rezistor (potenciometr)', 'R [Ω]', `<path d="M4,30 H30 M70,30 H96" ${STK}/><rect x="30" y="22" width="40" height="16" ${STK}/><path d="M28,46 L74,12" ${STK}/><path d="M74,12 l-9,1 m9,-1 l-3,8" ${STK}/>`, 'Šipka přes značku = nastavitelná hodnota.'],
-  ['Cívka (induktor)', 'L [H]', `<path d="M4,30 H24 a6.5,6.5 0 0 1 13,0 a6.5,6.5 0 0 1 13,0 a6.5,6.5 0 0 1 13,0 a6.5,6.5 0 0 1 13,0 H96" ${STK}/>`, 'Oblouky. Starší norma: plný (začerněný) obdélník.'],
-  ['Kondenzátor', 'C [F]', `<path d="M4,30 H46 M54,30 H96" ${STK}/><path d="M46,14 V46 M54,14 V46" style="fill:none;stroke:var(--ink);stroke-width:3"/>`, 'Dvě rovnoběžné desky.'],
-  ['Elektrolytický kondenzátor', 'C [F]', `<path d="M4,30 H46 M54,30 H96" ${STK}/><path d="M46,14 V46" style="fill:none;stroke:var(--ink);stroke-width:3"/><path d="M58,14 Q51,30 58,46" style="fill:none;stroke:var(--ink);stroke-width:3"/><text x="36" y="18" style="font:bold 13px system-ui;fill:var(--ink)">+</text>`, 'Polarizovaný: záleží na směru připojení (+).'],
-  ['Dioda', 'U_F ≈ 0,6–0,7 V', `<path d="M4,30 H38 M62,30 H96" ${STK}/><path d="M38,16 V44 L62,30 Z" ${FIL}/><path d="M62,16 V44" style="stroke:var(--ink);stroke-width:2.5"/>`, 'Trojúhelník ukazuje propustný směr proudu (anoda → katoda, katoda = čárka).'],
-  ['Zenerova dioda', 'U_Z [V]', `<path d="M4,30 H38 M62,30 H96" ${STK}/><path d="M38,16 V44 L62,30 Z" ${FIL}/><path d="M56,13 L62,16 V44 L68,47" style="fill:none;stroke:var(--ink);stroke-width:2.5"/>`, 'Ohnuté konce katody. V závěrném směru drží napětí U_Z.'],
-  ['Zdroj napětí', 'U [V]', `<path d="M4,30 H32 M68,30 H96" ${STK}/><circle cx="50" cy="30" r="18" ${STK}/><path d="M32,30 H68" ${STK}/>`, 'Kružnice s čarou ve směru vodiče (ideální zdroj napětí). Střídavý: vlnovka v kružnici.'],
-  ['Zdroj střídavého napětí', 'u(t) [V]', `<path d="M4,30 H32 M68,30 H96" ${STK}/><circle cx="50" cy="30" r="18" ${STK}/><path d="M38,30 q6,-10 12,0 q6,10 12,0" ${STK}/>`, 'Sinusový zdroj, např. vstup filtru u₁.'],
-  ['Zdroj proudu', 'I [A]', `<path d="M4,30 H32 M68,30 H96" ${STK}/><circle cx="50" cy="30" r="18" ${STK}/><path d="M50,12 V48" ${STK}/>`, 'Čára kolmo na vodič (ideální zdroj proudu).'],
-  ['Baterie / článek', 'U [V]', `<path d="M4,30 H44 M56,30 H96" ${STK}/><path d="M44,14 V46" style="stroke:var(--ink);stroke-width:2"/><path d="M56,21 V39" style="stroke:var(--ink);stroke-width:5"/><text x="34" y="16" style="font:bold 12px system-ui;fill:var(--ink)">+</text>`, 'Dlouhá tenká čára = kladný pól. Předpětí U_B v omezovači.'],
-  ['Operační zesilovač', 'A [–]', `<path d="M4,20 H30 M4,40 H30 M76,30 H96" ${STK}/><path d="M30,8 V52 L76,30 Z" ${STK}/><text x="34" y="25" style="font:bold 12px system-ui;fill:var(--ink)">+</text><text x="34" y="45" style="font:bold 14px system-ui;fill:var(--ink)">−</text>`, 'Trojúhelník (běžné). Norma IEC kreslí obdélník se znakem ▷ a ∞.'],
-  ['Svorka', '', `<path d="M4,30 H46" ${STK}/><circle cx="52" cy="30" r="5" style="fill:var(--card);stroke:var(--ink);stroke-width:2"/>`, 'Prázdné kolečko: místo připojení (vstup, výstup dvojbranu).'],
-  ['Uzel (vodivé spojení)', '', `<path d="M4,30 H96 M50,30 V56" ${STK}/><circle cx="50" cy="30" r="4" ${FIL}/>`, 'Plná tečka = vodiče jsou spojené. Křížení bez tečky = nespojené.'],
-  ['Zem / společný vodič', '', `<path d="M50,6 V30 M32,30 H68 M38,38 H62 M44,46 H56" ${STK}/>`, 'Referenční potenciál 0 V (dolní vodič dvojbranu).'],
-  ['Orientace napětí a proudu', 'u, i', `<path d="M10,46 H90" ${STK}/><path d="M70,46 l-10,-5 v10 z" ${FIL}/><text x="44" y="40" style="font:italic 15px 'Times New Roman',serif;fill:var(--ink)">i</text><path d="M94,8 V40" style="stroke:var(--accent);stroke-width:2"/><path d="M94,40 l-4,-9 h8 z" style="fill:var(--accent)"/><text x="80" y="26" style="font:italic 15px 'Times New Roman',serif;fill:var(--accent)">u</text>`, 'Šipka napětí od + k − (čs. zvyklost), šipka proudu ve směru kladného proudu.'],
-  ['Filtr (blok)', 'K(jω)', '', 'Čtverec s vlnovkami, přeškrtnuté = nepropuštěné pásmo (viz níže).']
-];
-function prvekZnacka(svg, kind) { return kind ? znackaSVG(kind, 60) : `<svg viewBox="0 0 100 60" width="100" height="60" role="img">${svg}</svg>`; }
 
 // ------------------------------------------------------------------ grafy
 function niceTicks(lo, hi, n = 5) { const span = hi - lo || 1, raw = span / n, mag = 10 ** Math.floor(Math.log10(raw)); const st = [1, 2, 2.5, 5, 10].map(k => k * mag).find(s => span / s <= n) || 10 * mag; const o = []; for (let v = Math.ceil(lo / st) * st; v <= hi + 1e-12; v += st) o.push(Math.abs(v) < st * 1e-6 ? 0 : v); return o; }
@@ -195,11 +182,13 @@ function render() {
 <tr><td><b>Pásmová zádrž</b> (PZ)</td><td>vše kromě pásma kolem $f_0$</td><td>pásmo kolem $f_0$</td><td>odstranění brumu 50 Hz</td></tr></table>
 <p class="note" style="margin:6px 0 0"><b>Mezní frekvence</b> $f_m$: tam, kde $|K| = 1/\sqrt2 \approx 0{,}707$, tj. útlum $-3\,\mathrm{dB}$ (výkon klesne na polovinu). V decibelech $|K|_{dB} = 20\log_{10}|K|$; $-20\,\mathrm{dB}$ = desetkrát menší amplituda.</p></div>
 
-<div class="card"><h3>Schematické značky prvků</h3><p class="p" style="margin:0 0 8px">Značky podle IEC 60617 (u nás ČSN EN 60617), které se používají ve schématech na této stránce i ve výkladu motoru. U některých prvků se v literatuře potkáš se starší nebo americkou variantou — je uvedená v poznámce.</p>
-<div class="scroll"><table class="znacky"><tr><th>Značka</th><th>Prvek</th><th>Veličina</th><th>Poznámka</th></tr>${PRVKY.map(([n, v, svg, d]) => `<tr><td style="width:110px">${prvekZnacka(svg, svg ? null : 'dp1')}</td><td><b>${n}</b></td><td style="white-space:nowrap">${v}</td><td>${d}</td></tr>`).join('')}</table></div></div>
-<div class="card"><h3>Značky filtrů</h3><p class="p" style="margin:0 0 8px">Ve schématech se filtr kreslí jako blok (čtverec) se třemi vlnovkami nad sebou: <b>nahoře vysoké, uprostřed střední, dole nízké frekvence</b>. Přeškrtnutá vlnovka znamená pásmo, které filtr <i>nepropustí</i>. Tak to zavádí norma IEC 60617 (u nás ČSN EN 60617, značky pro filtry v části o telekomunikacích). V regulaci (ZAE) se místo toho kreslí obecný blok s přenosem $K(j\omega)$ nebo $F(p)$.</p>
-<div style="display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-start">${[['dp1', 'Dolní propust', 'nepropustí vysoké a střední'], ['hp1', 'Horní propust', 'nepropustí nízké a střední'], ['pp', 'Pásmová propust', 'nepropustí vysoké ani nízké'], ['pz', 'Pásmová zádrž', 'nepropustí střední pásmo'], ['obecny', 'Obecný blok (regulace)', 'přenos K(jω), F(p)']].map(([k, n, d]) => `<figure style="margin:0;text-align:center;width:120px">${znackaSVG(k)}<figcaption style="font-size:13px"><b>${n}</b><br><span class="note">${d}</span></figcaption></figure>`).join('')}</div>
-<p class="note" style="margin:8px 0 0">Varianty značek se mezi zdroji mírně liší (někdy dvě vlnovky místo tří, obdélník místo čtverce); princip „přeškrtnuté = zadržené pásmo“ platí vždy.</p></div>
+<div class="card"><h3>Značky filtrů a propustí</h3><p class="p" style="margin:0 0 8px">V blokových schématech se filtr kreslí jako čtverec s vlnovkami nad sebou: <b>nahoře vysoké, uprostřed střední, dole nízké frekvence</b>. <b>Přeškrtnutá vlnovka = pásmo, které filtr nepropustí.</b> Tak to zavádí IEC 60617 (ČSN EN 60617, značky pro telekomunikační přenos). Prvky R, L, C, diody a zdroje jsou ve schématech laboratoře kreslené podle téže normy.</p>
+<div class="scroll"><table class="znacky"><tr><th>Typ</th><th>Tři pásma (norma)</th><th>Dvě vlnovky (učebnice)</th><th>Čti jako</th></tr>
+${[['dp1', 'Dolní propust (DP)', 'propustí dolní, přeškrtnuté střední a vysoké'], ['hp1', 'Horní propust (HP)', 'propustí horní, přeškrtnuté nízké a střední'], ['pp', 'Pásmová propust (PP)', 'propustí jen střední pásmo'], ['pz', 'Pásmová zádrž (PZ)', 'nepropustí jen střední pásmo']].map(([k, n, d]) => `<tr><td><b>${n}</b></td><td>${znackaSVG(k, 60)}</td><td>${k === 'pp' || k === 'pz' ? '<span class="note">jen ve tvaru se třemi pásmy</span>' : znackaSVG(k, 60, { dve: true })}</td><td>${d}</td></tr>`).join('')}
+</table></div>
+<p class="p" style="margin:10px 0 6px"><b>Doplňující údaje u značky.</b> K bloku se píše mezní nebo rezonanční frekvence a řád, např. $f_m = 1{,}6\,\mathrm{kHz}$ nebo „2“ v rohu = 2. řád (−40 dB/dek). V regulaci (ZAE) se tentýž filtr kreslí jako obecný blok s přenosem.</p>
+<div style="display:flex;flex-wrap:wrap;gap:14px 22px;align-items:flex-start">${[['dp1', 'DP s mezní frekvencí', { text: '1,6 kHz' }], ['dp2', 'DP 2. řádu', {}], ['obecny', 'Obecný blok K(jω), F(p)', {}], ['dvojbran', 'Dvojbran (vstup / výstup)', {}], ['omez', 'Omezovač (saturace) v blokovém schématu', {}]].map(([k, n, o]) => `<figure style="margin:0;text-align:center;width:130px">${znackaSVG(k, 72, o)}<figcaption style="font-size:13px">${n}</figcaption></figure>`).join('')}</div>
+<p class="note" style="margin:8px 0 0">Omezovač nemá vlastní značku filtru: v elektronickém schématu ho poznáš podle zapojení (sériový R a dioda nebo Zenerova dioda paralelně k výstupu), v blokovém schématu regulace podle bloku s nasycenou charakteristikou (jako „mez“ ve výkladu motoru, krok 5).</p></div>
 
 <h2 id="prvky">Proč to funguje: R, L a C při různé frekvenci</h2>
 <div class="grid3">
@@ -387,4 +376,4 @@ function math(el) { if (typeof renderMathInElement === 'function') renderMathInE
 
 render();
 let rz; window.addEventListener('resize', () => { clearTimeout(rz); rz = setTimeout(() => { drawFilter(); plotLim(); }, 150); });
-$('hlasit').addEventListener('click', function () { const q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Filtry a omezovače', cast: (location.hash || '').replace('#', ''), verze: '1.1.0' }); this.href = 'https://github.com/geproha/zae-sim/issues/new?' + q.toString(); });
+$('hlasit').addEventListener('click', function () { const q = new URLSearchParams({ template: '1-chyba.yml', stranka: 'Filtry a omezovače', cast: (location.hash || '').replace('#', ''), verze: '1.1.1' }); this.href = 'https://github.com/geproha/zae-sim/issues/new?' + q.toString(); });
